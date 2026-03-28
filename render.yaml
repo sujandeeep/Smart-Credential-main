@@ -1,0 +1,11 @@
+# render.yaml
+
+# Node.js service configuration
+
+services:
+  - type: web
+    name: my-node-service
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
