@@ -1,0 +1,24 @@
+[
+  {
+    "block_id": 1,
+    "timestamp": "2026-03-28T06:29:31.351Z",
+    "name": "Sujan ",
+    "usn": "1AK22 ",
+    "course": "zCs",
+    "cgpa": 9,
+    "result_status": "PASS",
+    "previous_hash": "0",
+    "current_hash": "74bfa0d57f468e66700b6041524ce99442247635f354ae188e96b02da5001d82"
+  },
+  {
+    "block_id": 2,
+    "timestamp": "2026-03-28T07:10:11.598Z",
+    "name": "Harsha",
+    "usn": "asjdgs2",
+    "course": "CS",
+    "cgpa": 6,
+    "result_status": "PASS",
+    "previous_hash": "74bfa0d57f468e66700b6041524ce99442247635f354ae188e96b02da5001d82",
+    "current_hash": "345127b88cc1a566f908b8af5b42a5606071b911d9c96637ab9153e7d911dac0"
+  }
+]
