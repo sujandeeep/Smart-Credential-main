@@ -1,0 +1,67 @@
+name: Update Ledger on Render Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      timestamp:
+        description: 'Deployment timestamp (ISO 8601)'
+        required: false
+        default: ''
+      service:
+        description: 'Service/App name'
+        required: false
+        default: 'Smart-Credential-main'
+      status:
+        description: 'Deployment status'
+        required: false
+        default: 'success'
+        type: choice
+        options:
+          - success
+          - failed
+      environment:
+        description: 'Environment'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+          - development
+      commit_sha:
+        description: 'Git commit SHA (optional)'
+        required: false
+        default: ''
+
+jobs:
+  update-ledger:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Update ledger
+        env:
+          DEPLOYMENT_TIMESTAMP: ${{ github.event.inputs.timestamp || format('{0:yyyy-MM-ddTHH:mm:ss.000Z}', now()) }}
+          DEPLOYMENT_SERVICE: ${{ github.event.inputs.service }}
+          DEPLOYMENT_STATUS: ${{ github.event.inputs.status }}
+          DEPLOYMENT_ENVIRONMENT: ${{ github.event.inputs.environment }}
+          DEPLOYMENT_COMMIT_SHA: ${{ github.event.inputs.commit_sha || github.sha }}
+          DEPLOYMENT_DEPLOYED_BY: ${{ github.actor }}
+        run: node scripts/update-ledger.js
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ledger.json
+          git commit -m "📦 Add deployment: ${{ github.event.inputs.service }} - ${{ github.event.inputs.status }}" || true
+          git push
